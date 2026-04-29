@@ -64,19 +64,19 @@ export default function Footer() {
               <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
                 <MapPin size={13} color="#C9A84C" style={{ marginTop: "2px", flexShrink: 0 }} />
                 <span style={{ ...S.sans, fontSize: "12px", color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}>
-                  Jl. Asia Afrika No. 88, Bandung 40111, West Java, Indonesia
+                Jl. Cikoneng, Lengkong, Kec. Bojongsoang, Kabupaten Bandung, Jawa Barat 40287
                 </span>
               </div>
               <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
                 <Phone size={13} color="#C9A84C" />
                 <a href="tel:+62222345678" style={{ ...S.sans, fontSize: "12px", color: "rgba(255,255,255,0.55)", textDecoration: "none" }}>
-                  +62 22 2345 6789
+                  +62 811-8089-1901
                 </a>
               </div>
               <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
                 <Mail size={13} color="#C9A84C" />
-                <a href="mailto:info@lti.co.id" style={{ ...S.sans, fontSize: "12px", color: "rgba(255,255,255,0.55)", textDecoration: "none" }}>
-                  info@lti.co.id
+                <a href="mailto:contact@lti.company" style={{ ...S.sans, fontSize: "12px", color: "rgba(255,255,255,0.55)", textDecoration: "none" }}>
+                contact@lti.company
                 </a>
               </div>
             </div>

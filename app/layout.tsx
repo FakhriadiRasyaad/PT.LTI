@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 export const metadata: Metadata = {
-  title: "Nexora Technologies | Robotics · Healthcare · Software",
+  title: "PT.LTI | Robotics · Healthcare · Software",
   description: "Leading provider of advanced robotics, healthcare equipment, and enterprise software solutions.",
 };
 
