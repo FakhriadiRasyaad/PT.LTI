@@ -5,13 +5,13 @@ import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 
 const S = {
   serif: {
-    fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif",
+    fontFamily: "var(--font-cormorant), 'Poppins', sans-serif",
   },
   sans: {
-    fontFamily: "var(--font-jost), 'Helvetica Neue', sans-serif",
+    fontFamily: "var(--font-jost), 'Poppins', sans-serif",
   },
   label: {
-    fontFamily: "var(--font-jost), sans-serif",
+    fontFamily: "var(--font-jost), 'Poppins', sans-serif",
     fontSize: "10px",
     fontWeight: 500,
     letterSpacing: "4px",
@@ -33,7 +33,7 @@ const inputStyle: React.CSSProperties = {
   padding: "12px 14px",
   background: "#F5F4F1",
   border: "1px solid #E2DDD5",
-  fontFamily: "var(--font-jost), sans-serif",
+  fontFamily: "var(--font-jost), 'Poppins', sans-serif",
   fontSize: "13px",
   color: "#2D2D2D",
   outline: "none",
@@ -100,16 +100,7 @@ ${form.message}
             backgroundSize: "60px 60px",
           }}
         />
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: "1280px",
-            margin: "0 auto",
-            padding: "160px 48px 64px",
-            width: "100%",
-          }}
-        >
+        <div className="hero-inner-md page-container" style={{ position: "relative", zIndex: 1 }}>
           <div
             style={{
               display: "flex",
@@ -155,20 +146,8 @@ ${form.message}
         </div>
       </section>
 
-      <section
-        style={{
-          padding: "96px 48px",
-          maxWidth: "1280px",
-          margin: "0 auto",
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "2fr 3fr",
-            gap: "80px",
-          }}
-        >
+      <section className="section-pad page-container">
+        <div className="grid-2-bias">
           {/* Contact Info */}
           <div>
             <span style={S.label}>Our Offices</span>
@@ -326,14 +305,7 @@ ${form.message}
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "16px",
-                    marginBottom: "16px",
-                  }}
-                >
+                <div className="form-grid-2">
                   {[
                     {
                       label: "Full Name *",
@@ -377,14 +349,7 @@ ${form.message}
                   ))}
                 </div>
 
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "16px",
-                    marginBottom: "16px",
-                  }}
-                >
+                <div className="form-grid-2">
                   <div>
                     <label
                       style={{
@@ -509,19 +474,17 @@ ${form.message}
 
                 <button
                   type="submit"
+                  className="btn-solid-navy"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "10px",
                     padding: "14px 36px",
-                    background: "#1A2744",
-                    color: "#FFFFFF",
                     ...S.sans,
                     fontSize: "10px",
                     fontWeight: 600,
                     letterSpacing: "2.5px",
                     textTransform: "uppercase",
-                    border: "none",
                     cursor: "pointer",
                   }}
                 >

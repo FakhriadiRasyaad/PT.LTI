@@ -1,18 +1,48 @@
+"use client";
+
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { 
+  Mail, Phone, MapPin, 
+  Home, Info, Settings, Briefcase, PhoneCall,
+  Bot, HeartPulse, Activity, Code2, Smartphone, Cpu,
+  Shield, FileText
+} from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
+import { t } from "../translations";
 
 const S = {
-  serif: { fontFamily: "var(--font-cormorant), 'Cormorant Garamond', Georgia, serif" },
-  sans: { fontFamily: "var(--font-jost), Jost, system-ui, sans-serif" },
+  serif: { fontFamily: "var(--font-cormorant), 'Poppins', sans-serif" },
+  sans: { fontFamily: "var(--font-jost), 'Poppins', sans-serif" },
 };
 
 export default function Footer() {
+  const { lang } = useLanguage();
+  const f = t.footer;
+  const n = t.nav;
+
+  const quickLinks = [
+    { href: "/",          label: t.nav.home[lang],      Icon: Home },
+    { href: "/about",     label: t.nav.about[lang],     Icon: Info },
+    { href: "/services",  label: t.nav.services[lang],  Icon: Settings },
+    { href: "/portfolio", label: t.nav.portfolio[lang], Icon: Briefcase },
+    { href: "/contact",   label: t.nav.contact[lang],   Icon: PhoneCall },
+  ];
+
+  const solutions = [
+    { label: lang === "id" ? "Robotika Industri"   : "Industrial Robotics",   Icon: Bot },
+    { label: lang === "id" ? "Perangkat Medis"     : "Medical Devices",        Icon: HeartPulse },
+    { label: lang === "id" ? "Peralatan Bedah"     : "Surgical Equipment",     Icon: Activity },
+    { label: lang === "id" ? "Software Enterprise" : "Enterprise Software",    Icon: Code2 },
+    { label: lang === "id" ? "Web & Mobile"        : "Web & Mobile Apps",      Icon: Smartphone },
+    { label: lang === "id" ? "Integrasi Sistem"    : "System Integration",     Icon: Cpu },
+  ];
+
   return (
     <footer style={{ background: "#1A2744", color: "#FFFFFF" }}>
       <div style={{ height: "2px", background: "linear-gradient(to right, #9B7A2E, #C9A84C, #E8D5A3)" }} />
 
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "72px 48px 48px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr 1fr 1.1fr", gap: "56px" }}>
+      <div className="page-container" style={{ paddingTop: "72px", paddingBottom: "48px" }}>
+        <div className="footer-grid">
 
           {/* Brand */}
           <div>
@@ -21,35 +51,47 @@ export default function Footer() {
               <div style={{ ...S.sans, fontSize: "8px", fontWeight: 500, letterSpacing: "5px", textTransform: "uppercase", color: "#C9A84C", marginTop: "3px" }}>PT. Lestari Teknologi Inovasi</div>
             </div>
             <p style={{ ...S.sans, fontSize: "12px", color: "rgba(255,255,255,0.55)", lineHeight: 1.85, marginBottom: "24px" }}>
-              Pioneering innovation through advanced robotics, precision healthcare solutions, and enterprise-grade software.
+              {f.tagline[lang]}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
             <h4 style={{ ...S.serif, fontSize: "15px", fontWeight: 600, color: "#FFFFFF", marginBottom: "20px", paddingBottom: "14px", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
-              Quick Links
+              {f.quickLinks[lang]}
             </h4>
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "12px" }}>
-              {[{href:"/",label:"Home"},{href:"/about",label:"About Us"},{href:"/services",label:"Services"},{href:"/portfolio",label:"Portfolio"},{href:"/contact",label:"Contact"}].map(link => (
+              {quickLinks.map(link => (
                 <li key={link.href}>
-                  <Link href={link.href} style={{ ...S.sans, fontSize: "12px", color: "rgba(255,255,255,0.55)", textDecoration: "none", letterSpacing: "0.5px", display: "flex", alignItems: "center", gap: "8px" }}>
-                    <span style={{ color: "#C9A84C" }}>—</span>{link.label}
+                  <Link
+                    href={link.href}
+                    className="footer-link-hover"
+                    style={{
+                      ...S.sans,
+                      fontSize: "12px",
+                      textDecoration: "none",
+                      letterSpacing: "0.5px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
+                    <link.Icon size={13} color="#C9A84C" style={{ flexShrink: 0 }} />{link.label}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Solutions */}
           <div>
             <h4 style={{ ...S.serif, fontSize: "15px", fontWeight: 600, color: "#FFFFFF", marginBottom: "20px", paddingBottom: "14px", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
-              Our Solutions
+              {f.ourSolutions[lang]}
             </h4>
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "12px" }}>
-              {["Industrial Robotics","Medical Devices","Surgical Equipment","Enterprise Software","Web & Mobile Apps","System Integration"].map(s => (
-                <li key={s} style={{ ...S.sans, fontSize: "12px", color: "rgba(255,255,255,0.55)", display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span style={{ color: "#C9A84C" }}>—</span>{s}
+              {solutions.map(s => (
+                <li key={s.label} style={{ ...S.sans, fontSize: "12px", color: "rgba(255,255,255,0.55)", display: "flex", alignItems: "center", gap: "10px" }}>
+                  <s.Icon size={13} color="#C9A84C" style={{ flexShrink: 0 }} />{s.label}
                 </li>
               ))}
             </ul>
@@ -58,7 +100,7 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h4 style={{ ...S.serif, fontSize: "15px", fontWeight: 600, color: "#FFFFFF", marginBottom: "20px", paddingBottom: "14px", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
-              Contact
+              {f.contact[lang]}
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
@@ -86,12 +128,25 @@ export default function Footer() {
         {/* Bottom bar */}
         <div style={{ marginTop: "56px", paddingTop: "24px", borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
           <p style={{ ...S.sans, fontSize: "11px", color: "rgba(255,255,255,0.35)", letterSpacing: "1px" }}>
-            © {new Date().getFullYear()} PT. Lestari Teknologi Inovasi. All Rights Reserved.
+            © {new Date().getFullYear()} PT. Lestari Teknologi Inovasi. {f.copyright[lang]}
           </p>
           <div style={{ display: "flex", gap: "24px" }}>
-            {["Privacy Policy","Terms of Service"].map(t => (
-              <a key={t} href="#" style={{ ...S.sans, fontSize: "11px", color: "rgba(255,255,255,0.35)", textDecoration: "none", letterSpacing: "1px" }}>{t}</a>
-            ))}
+            <Link
+              href="/privacy-policy"
+              style={{ ...S.sans, fontSize: "11px", color: "rgba(255,255,255,0.35)", textDecoration: "none", letterSpacing: "1px", display: "flex", alignItems: "center", gap: "6px", transition: "color 0.3s ease" }}
+              className="footer-link-hover"
+            >
+              <Shield size={11} />
+              {f.privacyPolicy[lang]}
+            </Link>
+            <Link
+              href="/terms-of-service"
+              style={{ ...S.sans, fontSize: "11px", color: "rgba(255,255,255,0.35)", textDecoration: "none", letterSpacing: "1px", display: "flex", alignItems: "center", gap: "6px", transition: "color 0.3s ease" }}
+              className="footer-link-hover"
+            >
+              <FileText size={11} />
+              {f.termsOfService[lang]}
+            </Link>
           </div>
         </div>
       </div>
