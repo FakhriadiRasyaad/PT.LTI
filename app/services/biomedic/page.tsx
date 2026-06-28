@@ -4,9 +4,10 @@ import Link from "next/link";
 import {
   HeartPulse, Activity, Cog, Wrench, ArrowLeft,
   CheckCircle2, Shield, Wifi, Layers, AlertTriangle,
+  CreditCard,
 } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext";
-import { t } from "../../translations";
+import { useCms } from "../../context/CmsContext";
 
 const ff = {
   serif: "var(--font-cormorant), 'Poppins', sans-serif",
@@ -35,7 +36,7 @@ const WA_ICON = (
 
 export default function BiomedicPage() {
   const { lang } = useLanguage();
-  const b = t.biomedic;
+  const { biomedicTranslations: b } = useCms();
 
   const services = [
     {
@@ -73,6 +74,7 @@ export default function BiomedicPage() {
       desc: b.cat1_desc[lang],
       highlights: b.cat1_highlights[lang],
       wa: b.cat1_wa[lang],
+      payText: b.cat1_pay[lang],
     },
     {
       Icon: Cog,
@@ -81,6 +83,7 @@ export default function BiomedicPage() {
       desc: b.cat2_desc[lang],
       highlights: b.cat2_highlights[lang],
       wa: b.cat2_wa[lang],
+      payText: b.cat2_pay[lang],
     },
   ];
 
@@ -134,7 +137,7 @@ export default function BiomedicPage() {
                   <p style={{ fontFamily: ff.sans, fontSize: 13, color: "#6B6B6B", lineHeight: 1.8 }}>{svc.fullDesc}</p>
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, paddingTop: 8, borderTop: "1px solid #E2DDD5", marginTop: "auto" }}>
-                  {svc.specs.map((spec, j) => (
+                  {(svc.specs as string[]).map((spec: string, j: number) => (
                     <div key={j} style={{ display: "flex", alignItems: "center", gap: 7 }}>
                       <CheckCircle2 size={12} color="#C9A84C" />
                       <span style={{ fontFamily: ff.sans, fontSize: 11, color: "#555" }}>{spec}</span>
@@ -175,23 +178,35 @@ export default function BiomedicPage() {
                     <p style={{ fontFamily: ff.sans, fontSize: 13, color: "#6B6B6B", lineHeight: 1.8 }}>{item.desc}</p>
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, paddingTop: 14, borderTop: "1px solid #E2DDD5" }}>
-                    {item.highlights.map((h, j) => (
+                    {(item.highlights as string[]).map((h: string, j: number) => (
                       <div key={j} style={{ display: "flex", alignItems: "center", gap: 7 }}>
                         <CheckCircle2 size={12} color="#C9A84C" />
                         <span style={{ fontFamily: ff.sans, fontSize: 11, color: "#555" }}>{h}</span>
                       </div>
                     ))}
                   </div>
-                  <a
-                    href={`https://wa.me/6281180891901?text=${encodeURIComponent(item.wa)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-solid-navy"
-                    style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "13px 20px", textDecoration: "none", fontFamily: ff.sans, fontSize: 10, fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" }}
-                  >
-                    {WA_ICON}
-                    {b.wa_btn[lang]}
-                  </a>
+                  <div style={{ display: "flex", gap: 10, marginTop: "auto" }}>
+                    <a
+                      href={`https://wa.me/6281180891901?text=${encodeURIComponent(item.wa)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-solid-navy"
+                      style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "13px 10px", textDecoration: "none", fontFamily: ff.sans, fontSize: 9, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase" }}
+                    >
+                      {WA_ICON}
+                      {b.wa_btn[lang]}
+                    </a>
+                    <a
+                      href={`https://wa.me/6281180891901?text=${encodeURIComponent(item.payText)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-solid-gold"
+                      style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "13px 10px", textDecoration: "none", fontFamily: ff.sans, fontSize: 9, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase" }}
+                    >
+                      <CreditCard size={13} />
+                      {b.pay_btn[lang]}
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}

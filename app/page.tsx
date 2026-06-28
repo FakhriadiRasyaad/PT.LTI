@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ArrowRight, ChevronRight, Star, Cpu, Activity, Code2, Zap } from "lucide-react";
 import { useLanguage } from "./context/LanguageContext";
 import { t } from "./translations";
+import { useCms } from "./context/CmsContext";
+import EditableText from "./components/EditableText";
 
 const ff = {
   serif: "var(--font-cormorant),'Cormorant Garamond',Georgia,serif",
@@ -19,7 +21,7 @@ const goldLine: React.CSSProperties = {
 
 export default function HomePage() {
   const { lang } = useLanguage();
-  const h = t.home;
+  const { homeTranslations: h } = useCms();
 
   return (
     <div style={{ overflowX: "hidden" }}>
@@ -37,36 +39,42 @@ export default function HomePage() {
           <div style={{ maxWidth: 700 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
               <div style={{ height: 1, width: 48, background: "#C9A84C" }} />
-              <span style={lbl}>{h.hero_label[lang]}</span>
+              <span style={lbl}>
+                <EditableText fieldKey="hero_label">{h.hero_label[lang]}</EditableText>
+              </span>
             </div>
             <h1 style={{ fontFamily: ff.serif, fontWeight: 300, color: "#FFFFFF", lineHeight: 1.1, fontSize: "clamp(48px,6.5vw,84px)", marginBottom: 28 }}>
-              {h.hero_title1[lang]}{" "}
-              <em style={{ fontStyle: "italic", fontWeight: 400, color: "#C9A84C" }}>{h.hero_em[lang]}</em>{" "}
-              {h.hero_title2[lang]}
+              <EditableText fieldKey="hero_title1">{h.hero_title1[lang]}</EditableText>{" "}
+              <em style={{ fontStyle: "italic", fontWeight: 400, color: "#C9A84C" }}>
+                <EditableText fieldKey="hero_em">{h.hero_em[lang]}</EditableText>
+              </em>{" "}
+              <EditableText fieldKey="hero_title2">{h.hero_title2[lang]}</EditableText>
             </h1>
             <p style={{ fontFamily: ff.sans, fontSize: 15, fontWeight: 300, color: "rgba(255,255,255,0.68)", lineHeight: 1.8, maxWidth: 520, marginBottom: 44 }}>
-              {h.hero_sub[lang]}
+              <EditableText fieldKey="hero_sub" inline={false}>{h.hero_sub[lang]}</EditableText>
             </p>
             <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
               <Link href="/services" className="btn-solid-gold" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "14px 32px", textDecoration: "none", fontFamily: ff.sans, fontSize: 10, fontWeight: 600, letterSpacing: 2.5, textTransform: "uppercase" }}>
-                {h.hero_cta1[lang]} <ArrowRight size={13} />
+                <EditableText fieldKey="hero_cta1">{h.hero_cta1[lang]}</EditableText> <ArrowRight size={13} />
               </Link>
               <Link href="/contact" className="btn-outline-light" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "14px 32px", textDecoration: "none", fontFamily: ff.sans, fontSize: 10, fontWeight: 500, letterSpacing: 2.5, textTransform: "uppercase" }}>
-                {h.hero_cta2[lang]}
+                <EditableText fieldKey="hero_cta2">{h.hero_cta2[lang]}</EditableText>
               </Link>
             </div>
           </div>
 
           <div className="grid-4" style={{ marginTop: 80, borderTop: "1px solid rgba(201,168,76,0.25)" }}>
             {[
-              { num: "2026", label: h.stat_founded[lang] },
-              { num: "3+",   label: h.stat_products[lang] },
-              { num: "2",    label: h.stat_clients[lang] },
-              { num: "100%", label: h.stat_quality[lang] },
+              { num: "2026", label: h.stat_founded[lang], key: "stat_founded" },
+              { num: "3+",   label: h.stat_products[lang], key: "stat_products" },
+              { num: "2",    label: h.stat_clients[lang], key: "stat_clients" },
+              { num: "100%", label: h.stat_quality[lang], key: "stat_quality" },
             ].map((s, i) => (
               <div key={i} style={{ padding: "24px 0 24px 12px", borderRight: i < 3 ? "1px solid rgba(255,255,255,0.07)" : "none" }}>
                 <div style={{ fontFamily: ff.serif, fontSize: 32, fontWeight: 600, color: "#C9A84C" }}>{s.num}</div>
-                <div style={{ ...lbl, color: "rgba(255,255,255,0.45)", marginTop: 4 }}>{s.label}</div>
+                <div style={{ ...lbl, color: "rgba(255,255,255,0.45)", marginTop: 4 }}>
+                  <EditableText fieldKey={s.key}>{s.label}</EditableText>
+                </div>
               </div>
             ))}
           </div>
@@ -77,16 +85,22 @@ export default function HomePage() {
       <section className="section-pad page-container">
         <div className="grid-2" style={{ alignItems: "center" }}>
           <div>
-            <div style={lbl}>{h.overview_label[lang]}</div>
+            <div style={lbl}>
+              <EditableText fieldKey="overview_label">{h.overview_label[lang]}</EditableText>
+            </div>
             <h2 style={{ fontFamily: ff.serif, fontWeight: 300, color: "#1A2744", lineHeight: 1.15, fontSize: "clamp(32px,4vw,52px)", margin: "12px 0 20px" }}>
-              {h.overview_title1[lang]} <em style={{ fontStyle: "italic" }}>{h.overview_em[lang]}</em> {h.overview_title2[lang]}
+              <EditableText fieldKey="overview_title1">{h.overview_title1[lang]}</EditableText>{" "}
+              <em style={{ fontStyle: "italic" }}>
+                <EditableText fieldKey="overview_em">{h.overview_em[lang]}</EditableText>
+              </em>{" "}
+              <EditableText fieldKey="overview_title2">{h.overview_title2[lang]}</EditableText>
             </h2>
             <div style={{ ...goldLine, marginBottom: 24 }} />
             <p style={{ fontFamily: ff.sans, fontSize: 14, color: "#6B6B6B", lineHeight: 1.85, marginBottom: 16 }}>
-              {h.overview_p1[lang]}
+              <EditableText fieldKey="overview_p1" inline={false}>{h.overview_p1[lang]}</EditableText>
             </p>
             <p style={{ fontFamily: ff.sans, fontSize: 14, color: "#6B6B6B", lineHeight: 1.85, marginBottom: 40 }}>
-              {h.overview_p2[lang]}
+              <EditableText fieldKey="overview_p2" inline={false}>{h.overview_p2[lang]}</EditableText>
             </p>
             <Link
               href="/about"
@@ -104,7 +118,7 @@ export default function HomePage() {
                 paddingBottom: 4,
               }}
             >
-              {h.overview_cta[lang]} <ChevronRight size={13} />
+              <EditableText fieldKey="overview_cta">{h.overview_cta[lang]}</EditableText> <ChevronRight size={13} />
             </Link>
           </div>
           <div style={{ position: "relative" }}>
@@ -118,7 +132,7 @@ export default function HomePage() {
                   <div style={lbl}>Bandung, Indonesia</div>
                   <div style={{ margin: "20px 0 0", paddingTop: 20, borderTop: "1px solid #E2DDD5" }}>
                     <p style={{ fontFamily: ff.sans, fontSize: 12, color: "#6B6B6B", lineHeight: 1.7 }}>
-                      {h.overview_card_tagline[lang]}
+                      <EditableText fieldKey="overview_card_tagline" inline={false}>{h.overview_card_tagline[lang]}</EditableText>
                     </p>
                   </div>
                 </div>
@@ -134,24 +148,32 @@ export default function HomePage() {
       <section className="section-pad" style={{ background: "#F5F4F1" }}>
         <div className="page-container">
           <div style={{ textAlign: "center", marginBottom: 64 }}>
-            <div style={lbl}>{h.services_label[lang]}</div>
-            <h2 style={{ fontFamily: ff.serif, fontWeight: 300, color: "#1A2744", fontSize: "clamp(32px,4vw,50px)", margin: "12px 0 20px" }}>{h.services_title[lang]}</h2>
+            <div style={lbl}>
+              <EditableText fieldKey="services_label">{h.services_label[lang]}</EditableText>
+            </div>
+            <h2 style={{ fontFamily: ff.serif, fontWeight: 300, color: "#1A2744", fontSize: "clamp(32px,4vw,50px)", margin: "12px 0 20px" }}>
+              <EditableText fieldKey="services_title">{h.services_title[lang]}</EditableText>
+            </h2>
             <div style={{ ...goldLine, margin: "0 auto" }} />
           </div>
           <div className="grid-3">
             {[
-              { icon: <Cpu size={26} color="#C9A84C" />,      title: h.svc_robotics_title[lang], desc: h.svc_robotics_desc[lang] },
-              { icon: <Activity size={26} color="#C9A84C" />, title: h.svc_biomedic_title[lang], desc: h.svc_biomedic_desc[lang] },
-              { icon: <Code2 size={26} color="#C9A84C" />,    title: h.svc_software_title[lang], desc: h.svc_software_desc[lang] },
+              { icon: <Cpu size={26} color="#C9A84C" />,      title: h.svc_robotics_title[lang], desc: h.svc_robotics_desc[lang], tKey: "svc_robotics_title", dKey: "svc_robotics_desc" },
+              { icon: <Activity size={26} color="#C9A84C" />, title: h.svc_biomedic_title[lang], desc: h.svc_biomedic_desc[lang], tKey: "svc_biomedic_title", dKey: "svc_biomedic_desc" },
+              { icon: <Code2 size={26} color="#C9A84C" />,    title: h.svc_software_title[lang], desc: h.svc_software_desc[lang], tKey: "svc_software_title", dKey: "svc_software_desc" },
             ].map((s, i) => (
               <div key={i} style={{ background: "#FEFEFE", padding: "40px 36px", border: "1px solid #E2DDD5" }}>
                 <div style={{ width: 52, height: 52, border: "1px solid #E2DDD5", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 28 }}>
                   {s.icon}
                 </div>
-                <h3 style={{ fontFamily: ff.serif, fontSize: 20, fontWeight: 600, color: "#1A2744", marginBottom: 14 }}>{s.title}</h3>
-                <p style={{ fontFamily: ff.sans, fontSize: 13, color: "#6B6B6B", lineHeight: 1.8, marginBottom: 24 }}>{s.desc}</p>
+                <h3 style={{ fontFamily: ff.serif, fontSize: 20, fontWeight: 600, color: "#1A2744", marginBottom: 14 }}>
+                  <EditableText fieldKey={s.tKey}>{s.title}</EditableText>
+                </h3>
+                <p style={{ fontFamily: ff.sans, fontSize: 13, color: "#6B6B6B", lineHeight: 1.8, marginBottom: 24 }}>
+                  <EditableText fieldKey={s.dKey} inline={false}>{s.desc}</EditableText>
+                </p>
                 <Link href="/services" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: ff.sans, fontSize: 10, fontWeight: 600, letterSpacing: 2, textTransform: "uppercase", color: "#C9A84C", textDecoration: "none" }}>
-                  {h.svc_more[lang]} <ArrowRight size={11} />
+                  <EditableText fieldKey="svc_more">{h.svc_more[lang]}</EditableText> <ArrowRight size={11} />
                 </Link>
               </div>
             ))}
@@ -163,8 +185,12 @@ export default function HomePage() {
       <section className="section-pad">
         <div className="page-container">
           <div style={{ textAlign: "center", marginBottom: 64 }}>
-            <div style={lbl}>{h.testi_label[lang]}</div>
-            <h2 style={{ fontFamily: ff.serif, fontWeight: 300, color: "#1A2744", fontSize: "clamp(32px,4vw,50px)", margin: "12px 0 20px" }}>{h.testi_title[lang]}</h2>
+            <div style={lbl}>
+              <EditableText fieldKey="testi_label">{h.testi_label[lang]}</EditableText>
+            </div>
+            <h2 style={{ fontFamily: ff.serif, fontWeight: 300, color: "#1A2744", fontSize: "clamp(32px,4vw,50px)", margin: "12px 0 20px" }}>
+              <EditableText fieldKey="testi_title">{h.testi_title[lang]}</EditableText>
+            </h2>
             <div style={{ ...goldLine, margin: "0 auto" }} />
           </div>
           <div className="grid-2" style={{ maxWidth: 900, margin: "0 auto" }}>
@@ -196,18 +222,21 @@ export default function HomePage() {
             <div style={{ height: 1, width: 48, background: "#C9A84C" }} /><Zap size={16} color="#C9A84C" /><div style={{ height: 1, width: 48, background: "#C9A84C" }} />
           </div>
           <h2 style={{ fontFamily: ff.serif, fontWeight: 300, color: "#FFFFFF", fontSize: "clamp(32px,4vw,52px)", marginBottom: 20 }}>
-            {h.cta_title1[lang]}{" "}
-            <em style={{ fontStyle: "italic", color: "#C9A84C" }}>{h.cta_em[lang]}</em>{h.cta_title2[lang]}
+            <EditableText fieldKey="cta_title1">{h.cta_title1[lang]}</EditableText>{" "}
+            <em style={{ fontStyle: "italic", color: "#C9A84C" }}>
+              <EditableText fieldKey="cta_em">{h.cta_em[lang]}</EditableText>
+            </em>{" "}
+            <EditableText fieldKey="cta_title2">{h.cta_title2[lang]}</EditableText>
           </h2>
           <p style={{ fontFamily: ff.sans, fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginBottom: 40 }}>
-            {h.cta_sub[lang]}
+            <EditableText fieldKey="cta_sub" inline={false}>{h.cta_sub[lang]}</EditableText>
           </p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <Link href="/contact" className="btn-solid-gold" style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "16px 40px", textDecoration: "none", fontFamily: ff.sans, fontSize: 10, fontWeight: 600, letterSpacing: 2.5, textTransform: "uppercase" }}>
-              {h.cta_btn1[lang]} <ArrowRight size={13} />
+              <EditableText fieldKey="cta_btn1">{h.cta_btn1[lang]}</EditableText> <ArrowRight size={13} />
             </Link>
             <Link href="/portfolio" className="btn-outline-light" style={{ display: "inline-flex", alignItems: "center", padding: "16px 40px", textDecoration: "none", fontFamily: ff.sans, fontSize: 10, fontWeight: 500, letterSpacing: 2.5, textTransform: "uppercase" }}>
-              {h.cta_btn2[lang]}
+              <EditableText fieldKey="cta_btn2">{h.cta_btn2[lang]}</EditableText>
             </Link>
           </div>
         </div>

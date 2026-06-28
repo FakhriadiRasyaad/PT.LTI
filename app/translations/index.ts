@@ -1,4 +1,23 @@
-export const t = {
+import overrides from "./overrides.json";
+
+function mergeDeep(target: any, source: any): any {
+  if (!source) return target;
+  const output = { ...target };
+  for (const key in source) {
+    if (source[key] && typeof source[key] === "object" && !Array.isArray(source[key])) {
+      if (key in target) {
+        output[key] = mergeDeep(target[key], source[key]);
+      } else {
+        output[key] = source[key];
+      }
+    } else {
+      output[key] = source[key];
+    }
+  }
+  return output;
+}
+
+const baseT = {
   // ── NAVBAR ──────────────────────────────────────────────────────────────
   nav: {
     home:      { id: "Home",        en: "Home" },
@@ -51,6 +70,36 @@ export const t = {
     },
     privacyPolicy:  { id: "Kebijakan Privasi", en: "Privacy Policy" },
     termsOfService: { id: "Syarat Layanan",     en: "Terms of Service" },
+  },
+
+  // ── CONTACT ──────────────────────────────────────────────────────────────
+  contact: {
+    hero_label:  { id: "Hubungi Kami",   en: "Get in Touch" },
+    hero_title:  { id: "Contact Us",     en: "Contact Us" },
+    hero_sub: {
+      id: "Kami menyambut pertanyaan dari bisnis yang ingin meningkatkan operasional mereka.",
+      en: "We welcome inquiries from businesses seeking to elevate their operations.",
+    },
+    offices_label: { id: "Kantor Kami",      en: "Our Offices" },
+    offices_title: { id: "Hubungi Tim Kami", en: "Reach Our Team" },
+    form_label:    { id: "Formulir Pertanyaan", en: "Enquiry Form" },
+    form_title:    { id: "Kirim Pesan",         en: "Send Us a Message" },
+    address_label: { id: "Kantor Pusat — Bandung", en: "Head Office — Bandung" },
+    address_value: { id: "Dewadaru Residence",      en: "Dewadaru Residence" },
+    phone_label:   { id: "Telepon",                 en: "Telephone" },
+    phone_value:   { id: "+62 811-8089-1901 (WhatsApp)", en: "+62 811-8089-1901 (WhatsApp)" },
+    email_label:   { id: "Email",                  en: "Email" },
+    hours_label:   { id: "Jam Operasional",        en: "Business Hours" },
+    hours_value: {
+      id: "Senin – Jumat: 08:00 – 17:00 WIB\nSabtu: 09:00 – 13:00 WIB",
+      en: "Monday – Friday: 08:00 – 17:00 WIB\nSaturday: 09:00 – 13:00 WIB",
+    },
+    submit_btn:    { id: "Kirim Pertanyaan",       en: "Submit Enquiry" },
+    sent_title:    { id: "Pesan Siap Dikirim",     en: "Message Ready to Send" },
+    sent_sub: {
+      id: "Aplikasi email Anda telah dibuka dengan pesan yang ditujukan ke contact@lti.company.",
+      en: "Your email application has been opened with the message addressed to contact@lti.company.",
+    },
   },
 
   // ── HOMEPAGE ────────────────────────────────────────────────────────────
@@ -360,7 +409,16 @@ export const t = {
       id: "Halo PT. LTI, saya tertarik dengan produk Deteksi Kantuk Pengemudi. Boleh saya tahu lebih lanjut?",
       en: "Hello PT. LTI, I am interested in the Driver Drowsiness Detection product. May I learn more?",
     },
+    cat1_pay: {
+      id: "Halo PT. LTI, saya ingin melakukan pembayaran untuk produk NuVia (Monitoring Detak Jantung Janin). Bagaimana prosedur pembayarannya?",
+      en: "Hello PT. LTI, I would like to make a payment for the NuVia (Fetal Heart Rate Monitoring) product. What is the payment procedure?",
+    },
+    cat2_pay: {
+      id: "Halo PT. LTI, saya ingin melakukan pembayaran untuk produk Aleron (Deteksi Kantuk Pengemudi). Bagaimana prosedur pembayarannya?",
+      en: "Hello PT. LTI, I would like to make a payment for the Aleron (Driver Drowsiness Detection) product. What is the payment procedure?",
+    },
     wa_btn: { id: "Konsultasi via WA", en: "Consult via WA" },
+    pay_btn: { id: "Pembayaran", en: "Payment" },
     why_label: { id: "Keunggulan Kami",      en: "Our Advantages" },
     why_title: { id: "Mengapa Memilih PT. LTI?", en: "Why Choose PT. LTI?" },
     why_sub: {
@@ -447,7 +505,16 @@ export const t = {
       id: "Halo PT. LTI, saya tertarik dengan produk Arm Robot Penanganan Material. Boleh saya tahu lebih lanjut?",
       en: "Hello PT. LTI, I am interested in the Material Handling Robot Arm product. May I learn more?",
     },
+    cat1_pay: {
+      id: "Halo PT. LTI, saya ingin melakukan pembayaran untuk produk Axionix Orbit 1 (Arm Robot Photobooth). Bagaimana prosedur pembayarannya?",
+      en: "Hello PT. LTI, I would like to make a payment for the Axionix Orbit 1 (Photobooth Robot Arm) product. What is the payment procedure?",
+    },
+    cat2_pay: {
+      id: "Halo PT. LTI, saya ingin melakukan pembayaran untuk produk Axionix Orbit 2 (Arm Robot Industri). Bagaimana prosedur pembayarannya?",
+      en: "Hello PT. LTI, I would like to make a payment for the Axionix Orbit 2 (Industrial Robot Arm) product. What is the payment procedure?",
+    },
     wa_btn: { id: "Konsultasi via WA", en: "Consult via WA" },
+    pay_btn: { id: "Pembayaran", en: "Payment" },
     why_label: { id: "Keunggulan Kami",      en: "Our Advantages" },
     why_title: { id: "Mengapa Memilih PT. LTI?", en: "Why Choose PT. LTI?" },
     why_sub: {
@@ -566,7 +633,20 @@ export const t = {
       id: "Halo PT. LTI, saya ingin mendiskusikan kebutuhan pengembangan aplikasi custom. Boleh kita jadwalkan konsultasi?",
       en: "Hello PT. LTI, I would like to discuss custom app development needs. Can we schedule a consultation?",
     },
+    cat1_pay: {
+      id: "Halo PT. LTI, saya ingin melakukan pembayaran untuk produk Sistem Keuangan Yayasan SPPG. Bagaimana prosedur pembayarannya?",
+      en: "Hello PT. LTI, I would like to make a payment for the SPPG Foundation Financial System. What is the payment procedure?",
+    },
+    cat2_pay: {
+      id: "Halo PT. LTI, saya ingin melakukan pembayaran untuk produk Sistem Inventori SPPG. Bagaimana prosedur pembayarannya?",
+      en: "Hello PT. LTI, I would like to make a payment for the SPPG Inventory System. What is the payment procedure?",
+    },
+    cat3_pay: {
+      id: "Halo PT. LTI, saya ingin melakukan pembayaran untuk Pengembangan Aplikasi Custom. Bagaimana prosedur pembayarannya?",
+      en: "Hello PT. LTI, I would like to make a payment for Custom App Development. What is the payment procedure?",
+    },
     wa_btn: { id: "Konsultasi via WA", en: "Consult via WA" },
+    pay_btn: { id: "Pembayaran", en: "Payment" },
     why_label: { id: "Keunggulan Kami",      en: "Our Advantages" },
     why_title: { id: "Mengapa Memilih PT. LTI?", en: "Why Choose PT. LTI?" },
     why_sub: {
@@ -752,6 +832,8 @@ export const t = {
     },
   },
 };
+
+export const t = mergeDeep(baseT, overrides);
 
 /** Helper: resolve a bilingual string based on current lang */
 export function tx(obj: { id: string; en: string }, lang: "id" | "en"): string {

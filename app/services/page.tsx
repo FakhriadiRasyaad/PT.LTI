@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Bot, Cpu, Cog, Wrench, Activity, HeartPulse, Code2, Database, Smartphone } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
-import { t } from "../translations";
+import { useCms } from "../context/CmsContext";
 
 const ff = {
   serif: "var(--font-cormorant), 'Poppins', sans-serif",
@@ -19,7 +19,7 @@ const goldLine: React.CSSProperties = {
 
 export default function ServicesPage() {
   const { lang } = useLanguage();
-  const s = t.services;
+  const { servicesTranslations: s } = useCms();
 
   const cats = [
     {

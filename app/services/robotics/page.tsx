@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Bot, Cpu, Wrench, ArrowLeft, CheckCircle2, Activity, Layers, Zap, Shield } from "lucide-react";
+import { Bot, Cpu, Wrench, ArrowLeft, CheckCircle2, Activity, Layers, Zap, Shield, CreditCard } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext";
-import { t } from "../../translations";
+import { useCms } from "../../context/CmsContext";
 
 const ff = {
   serif: "var(--font-cormorant), 'Poppins', sans-serif",
@@ -32,7 +32,7 @@ const WA_ICON = (
 
 export default function RoboticsPage() {
   const { lang } = useLanguage();
-  const r = t.robotics;
+  const { roboticsTranslations: r } = useCms();
 
   const services = [
     {
@@ -58,6 +58,7 @@ export default function RoboticsPage() {
       desc: r.cat1_desc[lang],
       highlights: r.cat1_highlights[lang],
       wa: r.cat1_wa[lang],
+      payText: r.cat1_pay[lang],
     },
     {
       Icon: Wrench,
@@ -66,6 +67,7 @@ export default function RoboticsPage() {
       desc: r.cat2_desc[lang],
       highlights: r.cat2_highlights[lang],
       wa: r.cat2_wa[lang],
+      payText: r.cat2_pay[lang],
     },
   ];
 
@@ -118,7 +120,7 @@ export default function RoboticsPage() {
                   <p style={{ fontFamily: ff.sans, fontSize: 13, color: "#6B6B6B", lineHeight: 1.8 }}>{svc.fullDesc}</p>
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, paddingTop: 8, borderTop: "1px solid #E2DDD5", marginTop: "auto" }}>
-                  {svc.specs.map((spec, j) => (
+                  {(svc.specs as string[]).map((spec: string, j: number) => (
                     <div key={j} style={{ display: "flex", alignItems: "center", gap: 7 }}>
                       <CheckCircle2 size={12} color="#C9A84C" />
                       <span style={{ fontFamily: ff.sans, fontSize: 11, color: "#555" }}>{spec}</span>
@@ -159,23 +161,35 @@ export default function RoboticsPage() {
                     <p style={{ fontFamily: ff.sans, fontSize: 12, color: "#6B6B6B", lineHeight: 1.8 }}>{item.desc}</p>
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, paddingTop: 14, borderTop: "1px solid #E2DDD5" }}>
-                    {item.highlights.map((h, j) => (
+                    {(item.highlights as string[]).map((h: string, j: number) => (
                       <div key={j} style={{ display: "flex", alignItems: "center", gap: 7 }}>
                         <CheckCircle2 size={11} color="#C9A84C" />
                         <span style={{ fontFamily: ff.sans, fontSize: 10, color: "#555" }}>{h}</span>
                       </div>
                     ))}
                   </div>
-                  <a
-                    href={`https://wa.me/6281180891901?text=${encodeURIComponent(item.wa)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-solid-navy"
-                    style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "13px 12px", textDecoration: "none", fontFamily: ff.sans, fontSize: 9, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase" }}
-                  >
-                    {WA_ICON}
-                    {r.wa_btn[lang]}
-                  </a>
+                  <div style={{ display: "flex", gap: 10, marginTop: "auto" }}>
+                    <a
+                      href={`https://wa.me/6281180891901?text=${encodeURIComponent(item.wa)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-solid-navy"
+                      style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "13px 8px", textDecoration: "none", fontFamily: ff.sans, fontSize: 9, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase" }}
+                    >
+                      {WA_ICON}
+                      {r.wa_btn[lang]}
+                    </a>
+                    <a
+                      href={`https://wa.me/6281180891901?text=${encodeURIComponent(item.payText)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-solid-gold"
+                      style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "13px 8px", textDecoration: "none", fontFamily: ff.sans, fontSize: 9, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase" }}
+                    >
+                      <CreditCard size={13} />
+                      {r.pay_btn[lang]}
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}

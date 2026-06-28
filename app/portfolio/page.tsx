@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
-import { t } from "../translations";
+import { useCms } from "../context/CmsContext";
 
 const ff = {
   serif: "var(--font-cormorant), 'Poppins', sans-serif",
@@ -16,7 +16,7 @@ const lbl: React.CSSProperties = {
 
 export default function PortfolioPage() {
   const { lang } = useLanguage();
-  const p = t.portfolio;
+  const { portfolioTranslations: p } = useCms();
 
   const projects = [
     {
@@ -120,7 +120,7 @@ export default function PortfolioPage() {
                   </div>
 
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                    {proj.tags.map(tag => (
+                    {(proj.tags as string[]).map((tag: string) => (
                       <span key={tag} style={{ fontFamily: ff.sans, fontSize: 9, letterSpacing: 0.5, padding: "3px 8px", background: "#F5F4F1", color: "#6B6B6B" }}>
                         {tag}
                       </span>

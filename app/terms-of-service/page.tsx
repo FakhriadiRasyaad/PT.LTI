@@ -2,7 +2,7 @@
 
 import { FileText, Users, AlertTriangle, Ban, Scale, RefreshCw, Mail } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
-import { t } from "../translations";
+import { useCms } from "../context/CmsContext";
 
 const ff = {
   serif: "var(--font-cormorant), 'Poppins', sans-serif",
@@ -18,7 +18,7 @@ const goldLine: React.CSSProperties = {
 
 export default function TermsOfServicePage() {
   const { lang } = useLanguage();
-  const terms = t.terms;
+  const { termsTranslations: terms } = useCms();
 
   const sections = [
     { Icon: Users,         title: terms.s1_title[lang], content: terms.s1[lang] },
@@ -75,7 +75,7 @@ export default function TermsOfServicePage() {
                   {title}
                 </h2>
                 <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 14 }}>
-                  {content.map((item, j) => (
+                  {(content as string[]).map((item: string, j: number) => (
                     <li key={j} style={{ display: "flex", gap: 12, fontFamily: ff.sans, fontSize: 13, color: "#6B6B6B", lineHeight: 1.85 }}>
                       <span style={{ color: "#C9A84C", fontWeight: 700, flexShrink: 0, marginTop: 1 }}>—</span>
                       {item}

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
+import { useCms } from "../context/CmsContext";
 
 const S = {
   serif: {
@@ -41,6 +43,8 @@ const inputStyle: React.CSSProperties = {
 };
 
 export default function ContactPage() {
+  const { lang } = useLanguage();
+  const { contactTranslations: c } = useCms();
   const [form, setForm] = useState({
     name: "",
     company: "",
@@ -116,7 +120,7 @@ ${form.message}
                 background: "#C9A84C",
               }}
             />
-            <span style={S.label}>Get in Touch</span>
+            <span style={S.label}>{c.hero_label[lang]}</span>
           </div>
 
           <h1
@@ -140,8 +144,7 @@ ${form.message}
               lineHeight: 1.75,
             }}
           >
-            We welcome inquiries from businesses seeking to elevate their
-            operations.
+            {c.hero_sub[lang]}
           </p>
         </div>
       </section>
@@ -150,7 +153,7 @@ ${form.message}
         <div className="grid-2-bias">
           {/* Contact Info */}
           <div>
-            <span style={S.label}>Our Offices</span>
+            <span style={S.label}>{c.offices_label[lang]}</span>
 
             <h2
               style={{
@@ -161,7 +164,7 @@ ${form.message}
                 margin: "12px 0 32px",
               }}
             >
-              Reach Our Team
+              {c.offices_title[lang]}
             </h2>
 
             <div
@@ -174,24 +177,23 @@ ${form.message}
               {[
                 {
                   Icon: MapPin,
-                  label: "Head Office — Bandung",
-                  content: "Dewadaru Residence",
+                  label: c.address_label[lang],
+                  content: c.address_value[lang],
                 },
                 {
                   Icon: Phone,
-                  label: "Telephone",
-                  content: "+62 811-8089-1901 (WhatsApp)",
+                  label: c.phone_label[lang],
+                  content: c.phone_value[lang],
                 },
                 {
                   Icon: Mail,
-                  label: "Email",
+                  label: c.email_label[lang],
                   content: "contact@lti.company",
                 },
                 {
                   Icon: Clock,
-                  label: "Business Hours",
-                  content:
-                    "Monday – Friday: 08:00 – 17:00 WIB\nSaturday: 09:00 – 13:00 WIB",
+                  label: c.hours_label[lang],
+                  content: c.hours_value[lang],
                 },
               ].map(({ Icon, label, content }, i) => (
                 <div
@@ -241,7 +243,7 @@ ${form.message}
 
           {/* Form */}
           <div>
-            <span style={S.label}>Enquiry Form</span>
+            <span style={S.label}>{c.form_label[lang]}</span>
 
             <h2
               style={{
@@ -252,7 +254,7 @@ ${form.message}
                 margin: "12px 0 32px",
               }}
             >
-              Send Us a Message
+              {c.form_title[lang]}
             </h2>
 
             {submitted ? (
@@ -286,7 +288,7 @@ ${form.message}
                     marginBottom: "12px",
                   }}
                 >
-                  Message Ready to Send
+                  {c.sent_title[lang]}
                 </h3>
 
                 <p
@@ -299,8 +301,7 @@ ${form.message}
                     margin: "0 auto",
                   }}
                 >
-                  Your email application has been opened with the message
-                  addressed to contact@lti.company.
+                  {c.sent_sub[lang]}
                 </p>
               </div>
             ) : (
@@ -488,7 +489,7 @@ ${form.message}
                     cursor: "pointer",
                   }}
                 >
-                  Submit Enquiry <Send size={13} />
+                  {c.submit_btn[lang]} <Send size={13} />
                 </button>
 
                 <p

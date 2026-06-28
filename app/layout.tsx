@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import { LanguageProvider } from "./context/LanguageContext";
+import { CmsProvider } from "./context/CmsContext";
+import LayoutWrapper from "./components/LayoutWrapper";
 
 export const metadata: Metadata = {
   title: "PT.LTI | Robotics · Healthcare · Software",
@@ -22,11 +22,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <LanguageProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          <CmsProvider>
+            <LayoutWrapper>{children}</LayoutWrapper>
+          </CmsProvider>
         </LanguageProvider>
       </body>
     </html>
   );
 }
+

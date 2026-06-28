@@ -2,7 +2,7 @@
 
 import { Shield, Target, Eye, Award, Users, TrendingUp } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
-import { t } from "../translations";
+import { useCms } from "../context/CmsContext";
 
 const ff = {
   serif: "var(--font-cormorant), 'Poppins', sans-serif",
@@ -18,7 +18,7 @@ const goldLine: React.CSSProperties = {
 
 export default function AboutPage() {
   const { lang } = useLanguage();
-  const a = t.about;
+  const { aboutTranslations: a } = useCms();
 
   const milestones = a.milestones[lang];
 
@@ -81,7 +81,7 @@ export default function AboutPage() {
             </h2>
             <div style={{ ...goldLine, marginBottom: 24 }} />
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 14 }}>
-              {a.mission_points[lang].map((point, i) => (
+              {(a.mission_points[lang] as string[]).map((point: string, i: number) => (
                 <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, fontFamily: ff.sans, fontSize: 13, color: "rgba(255,255,255,0.7)", lineHeight: 1.7 }}>
                   <div style={{ width: 6, height: 6, background: "#C9A84C", marginTop: 7, flexShrink: 0 }} />
                   {point}
@@ -133,7 +133,7 @@ export default function AboutPage() {
         <div style={{ maxWidth: 720, margin: "0 auto", position: "relative" }}>
           <div style={{ position: "absolute", left: 20, top: 0, bottom: 0, width: 1, background: "#E2DDD5" }} />
           <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
-            {milestones.map((m, i) => (
+            {(milestones as any[]).map((m: any, i: number) => (
               <div key={i} style={{ display: "flex", gap: 32, alignItems: "flex-start" }}>
                 <div style={{ position: "relative", flexShrink: 0 }}>
                   <div style={{ width: 40, height: 40, background: i === 1 ? "#1A2744" : "#FFFFFF", border: i === 1 ? "none" : "1px solid #E2DDD5", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", zIndex: 1 }}>
