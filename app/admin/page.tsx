@@ -275,7 +275,7 @@ export default function AdminPage() {
   const { lang } = useLanguage();
   const cms = useCms();
   const {
-    isLoggedIn, loginWithOAuth, logout,
+    isLoggedIn, logout,
     isCmsMode, setIsCmsMode,
     homeTranslations: h,
     updateHomeField,
@@ -286,6 +286,7 @@ export default function AdminPage() {
     isSaving,
   } = cms;
 
+  const [authChecked,        setAuthChecked]        = useState(false);
   const [searchQuery,        setSearchQuery]        = useState("");
   const [activeSection,      setActiveSection]      = useState<string | null>("hero");
   const [activePage,         setActivePage]         = useState<PageId>("home");
@@ -365,6 +366,17 @@ export default function AdminPage() {
     }
   }, [toast]);
 
+  // Auth guard: redirect to login if not authenticated once auth state resolves
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setAuthChecked(true);
+      if (!session) {
+        window.location.replace("/admin/login");
+      }
+    });
+  }, []);
+
   useEffect(() => {
     if (isLoggedIn) setIsCmsMode(true);
   }, [isLoggedIn, setIsCmsMode]);
@@ -393,6 +405,17 @@ export default function AdminPage() {
       );
     }
   };
+
+  // Show a loading screen until auth check resolves
+  if (!authChecked) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", backgroundColor: "#0D1424", flexDirection: "column", gap: "16px" }}>
+        <div style={{ width: 40, height: 40, border: "3px solid rgba(201,168,76,0.2)", borderTop: "3px solid #C9A84C", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+        <span style={{ fontFamily: "var(--font-jost)", fontSize: 13, color: "rgba(255,255,255,0.5)" }}>Memverifikasi sesi...</span>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
 
   // ── DASHBOARD ───────────────────────────────────────────────────────────────
   return (

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
-
+import { createClient } from "@/lib/supabase/server";
 
 const ALL_PAGES = [
   "home", "about", "services", "robotics", "biomedic",
@@ -9,6 +8,8 @@ const ALL_PAGES = [
 
 export async function GET() {
   try {
+    const supabase = await createClient();
+
     const { data, error } = await supabase
       .from("translations")
       .select("page, data");
@@ -33,15 +34,10 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    // 1. Authenticate: Only Supabase JWT bearer tokens are accepted
-    const authHeader = request.headers.get("Authorization");
+    const supabase = await createClient();
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
-    }
-
-    const token = authHeader.split(" ")[1];
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    // 1. Authenticate: verify the user has an active session via cookie
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
