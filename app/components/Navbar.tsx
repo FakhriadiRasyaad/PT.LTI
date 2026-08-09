@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, ChevronDown, Shield, FileText, Globe } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
-import { t } from "../translations";
+import { useCms } from "../context/CmsContext";
 
 const ff = {
   serif: "var(--font-cormorant), 'Poppins', sans-serif",
@@ -13,11 +13,10 @@ const ff = {
 
 export default function Navbar() {
   const { lang, toggleLang } = useLanguage();
+  const { navTranslations: nav } = useCms();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesMobileOpen, setServicesMobileOpen] = useState(false);
-
-  const nav = t.nav;
 
   const navLinks = [
     { href: "/",          label: nav.home[lang] },

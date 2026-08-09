@@ -41,7 +41,7 @@ interface CmsContextType {
   footerTranslations:    FooterTranslations;
 
   // Generic field updater
-  updateField: (page: AnyPageKey, key: string, lang: "id" | "en", value: string) => void;
+  updateField: (page: AnyPageKey, key: string, lang: "id" | "en", value: any) => void;
   // Legacy alias for home page (keeps existing code working)
   updateHomeField: (key: keyof HomeTranslations, lang: "id" | "en", value: string) => void;
 
@@ -162,7 +162,7 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
   };
 
   // Generic field updater — works for any page
-  const updateField = (page: AnyPageKey, key: string, lang: "id" | "en", value: string) => {
+  const updateField = (page: AnyPageKey, key: string, lang: "id" | "en", value: any) => {
     setterMap[page]((prev: any) => {
       const fieldData = prev[key];
       if (typeof fieldData === "object" && fieldData !== null && !Array.isArray(fieldData)) {

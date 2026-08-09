@@ -75,7 +75,7 @@ export default function TermsOfServicePage() {
                   {title}
                 </h2>
                 <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 14 }}>
-                  {(content as string[]).map((item: string, j: number) => (
+                  {(Array.isArray(content) ? content : (typeof content === "string" ? content.split("\n") : [])).map((item: string, j: number) => (
                     <li key={j} style={{ display: "flex", gap: 12, fontFamily: ff.sans, fontSize: 13, color: "#6B6B6B", lineHeight: 1.85 }}>
                       <span style={{ color: "#C9A84C", fontWeight: 700, flexShrink: 0, marginTop: 1 }}>—</span>
                       {item}

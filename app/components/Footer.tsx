@@ -8,7 +8,7 @@ import {
   Shield, FileText
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
-import { t } from "../translations";
+import { useCms } from "../context/CmsContext";
 
 const S = {
   serif: { fontFamily: "var(--font-cormorant), 'Poppins', sans-serif" },
@@ -17,15 +17,14 @@ const S = {
 
 export default function Footer() {
   const { lang } = useLanguage();
-  const f = t.footer;
-  const n = t.nav;
+  const { footerTranslations: f, navTranslations: n } = useCms();
 
   const quickLinks = [
-    { href: "/",          label: t.nav.home[lang],      Icon: Home },
-    { href: "/about",     label: t.nav.about[lang],     Icon: Info },
-    { href: "/services",  label: t.nav.services[lang],  Icon: Settings },
-    { href: "/portfolio", label: t.nav.portfolio[lang], Icon: Briefcase },
-    { href: "/contact",   label: t.nav.contact[lang],   Icon: PhoneCall },
+    { href: "/",          label: n.home[lang],      Icon: Home },
+    { href: "/about",     label: n.about[lang],     Icon: Info },
+    { href: "/services",  label: n.services[lang],  Icon: Settings },
+    { href: "/portfolio", label: n.portfolio[lang], Icon: Briefcase },
+    { href: "/contact",   label: n.contact[lang],   Icon: PhoneCall },
   ];
 
   const solutions = [

@@ -2,8 +2,8 @@
 
 import { Shield, Lock, Eye, Bell, RefreshCw, Mail } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
-import { t } from "../translations";
-// asd
+import { useCms } from "../context/CmsContext";
+
 const ff = {
   serif: "var(--font-cormorant), 'Poppins', sans-serif",
   sans: "var(--font-jost), 'Poppins', sans-serif",
@@ -18,7 +18,7 @@ const goldLine: React.CSSProperties = {
 
 export default function PrivacyPolicyPage() {
   const { lang } = useLanguage();
-  const p = t.privacy;
+  const { privacyTranslations: p } = useCms();
 
   const sections = [
     { Icon: Eye,      title: p.s1_title[lang], content: p.s1[lang] },
@@ -75,7 +75,7 @@ export default function PrivacyPolicyPage() {
                   {title}
                 </h2>
                 <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 14 }}>
-                  {content.map((item: string, j: number) => (
+                  {(Array.isArray(content) ? content : (typeof content === "string" ? content.split("\n") : [])).map((item: string, j: number) => (
                     <li key={j} style={{ display: "flex", gap: 12, fontFamily: ff.sans, fontSize: 13, color: "#6B6B6B", lineHeight: 1.85 }}>
                       <span style={{ color: "#C9A84C", fontWeight: 700, flexShrink: 0, marginTop: 1 }}>—</span>
                       {item}

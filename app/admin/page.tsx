@@ -166,7 +166,7 @@ function buildPageTabs(cms: ReturnType<typeof useCms>): PageTab[] {
       sections: [
         { id: "hero",     title: "Hero Section",          keys: ["hero_label","hero_title","updated"] },
         { id: "intro",    title: "Introduction",          keys: ["intro"] },
-        { id: "sections", title: "Policy Sections",       keys: ["s1_title","s2_title","s3_title","s4_title","s5_title","s6_title"] },
+        { id: "sections", title: "Policy Sections",       keys: ["s1_title","s1","s2_title","s2","s3_title","s3","s4_title","s4","s5_title","s5","s6_title","s6"] },
         { id: "contact",  title: "Contact Box",           keys: ["contact_title","contact_sub"] },
       ],
     },
@@ -178,7 +178,7 @@ function buildPageTabs(cms: ReturnType<typeof useCms>): PageTab[] {
       sections: [
         { id: "hero",     title: "Hero Section",          keys: ["hero_label","hero_title","updated"] },
         { id: "intro",    title: "Introduction",          keys: ["intro"] },
-        { id: "sections", title: "Terms Sections",        keys: ["s1_title","s2_title","s3_title","s4_title","s5_title","s6_title"] },
+        { id: "sections", title: "Terms Sections",        keys: ["s1_title","s1","s2_title","s2","s3_title","s3","s4_title","s4","s5_title","s5","s6_title","s6"] },
         { id: "contact",  title: "Contact Box",           keys: ["contact_title","contact_sub"] },
       ],
     },
@@ -211,11 +211,13 @@ function FieldRow({
   onFocus,
 }: {
   keyStr: string;
-  value: { id?: string; en?: string } | undefined;
+  value: { id?: any; en?: any } | undefined;
   isFocused: boolean;
-  onUpdate: (lang: "id" | "en", val: string) => void;
+  onUpdate: (lang: "id" | "en", val: any) => void;
   onFocus: () => void;
 }) {
+  const isArrayField = Array.isArray(value?.id) || Array.isArray(value?.en);
+
   const isTextarea =
     keyStr.endsWith("_sub") ||
     keyStr.includes("_desc") ||
@@ -224,7 +226,9 @@ function FieldRow({
     keyStr.includes("_tagline") ||
     keyStr.includes("_body") ||
     keyStr.includes("_intro") ||
-    keyStr === "quote";
+    keyStr === "quote" ||
+    isArrayField ||
+    /^[sS]\d+$/.test(keyStr);
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
@@ -236,7 +240,7 @@ function FieldRow({
     color: "#FFFFFF",
     outline: "none",
     fontFamily: "var(--font-jost)",
-    ...(isTextarea ? { minHeight: "60px", resize: "vertical" as const, lineHeight: "1.4" } : {}),
+    ...(isTextarea ? { minHeight: "80px", resize: "vertical" as const, lineHeight: "1.4" } : {}),
   };
 
   const renderInput = (lang: "id" | "en") => {
@@ -245,15 +249,25 @@ function FieldRow({
         {lang.toUpperCase()}
       </span>
     );
-    const val = value?.[lang] || "";
+    const rawVal = value?.[lang];
+    const val = Array.isArray(rawVal) ? rawVal.join("\n") : (rawVal || "");
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const newText = e.target.value;
+      if (isArrayField) {
+        onUpdate(lang, newText.split("\n"));
+      } else {
+        onUpdate(lang, newText);
+      }
+    };
 
     return (
       <div style={{ marginBottom: lang === "id" ? "8px" : 0, position: "relative" }}>
         {langLabel}
         {isTextarea ? (
-          <textarea id={`cms-input-${keyStr}-${lang}`} value={val} onChange={(e) => onUpdate(lang, e.target.value)} onFocus={onFocus} style={inputStyle} />
+          <textarea id={`cms-input-${keyStr}-${lang}`} value={val} onChange={handleChange} onFocus={onFocus} style={inputStyle} />
         ) : (
-          <input id={`cms-input-${keyStr}-${lang}`} type="text" value={val} onChange={(e) => onUpdate(lang, e.target.value)} onFocus={onFocus} style={inputStyle} />
+          <input id={`cms-input-${keyStr}-${lang}`} type="text" value={val} onChange={handleChange} onFocus={onFocus} style={inputStyle} />
         )}
       </div>
     );
@@ -262,7 +276,7 @@ function FieldRow({
   return (
     <div style={{ borderLeft: isFocused ? "3px solid #C9A84C" : "1px solid rgba(255,255,255,0.06)", paddingLeft: "10px", transition: "all 0.2s ease" }}>
       <label style={{ fontSize: "11px", color: isFocused ? "#C9A84C" : "rgba(255,255,255,0.5)", fontWeight: 600, display: "block", marginBottom: "6px", fontFamily: "monospace" }}>
-        {keyStr}
+        {keyStr} {isArrayField && <span style={{ fontSize: "9px", opacity: 0.6 }}>(1 baris = 1 poin)</span>}
       </label>
       {renderInput("id")}
       {renderInput("en")}
@@ -517,11 +531,13 @@ export default function AdminPage() {
           <div style={{ flex: 1, overflowY: "auto", padding: "16px" }} className="cms-fields-container">
             {currentTab.sections.map((section) => {
               const filteredKeys = section.keys.filter((key) => {
-                const field = pageTranslations[key] as { id?: string; en?: string } | undefined;
+                const field = pageTranslations[key] as { id?: any; en?: any } | undefined;
+                const idStr = Array.isArray(field?.id) ? field.id.join(" ") : (field?.id || "");
+                const enStr = Array.isArray(field?.en) ? field.en.join(" ") : (field?.en || "");
                 return (
                   key.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                  (field?.id || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-                  (field?.en || "").toLowerCase().includes(searchQuery.toLowerCase())
+                  idStr.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  enStr.toLowerCase().includes(searchQuery.toLowerCase())
                 );
               });
 
@@ -532,7 +548,7 @@ export default function AdminPage() {
                 <div key={section.id} style={{ marginBottom: "10px", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "6px", overflow: "hidden", backgroundColor: "#152037" }}>
                   <button
                     onClick={() => setActiveSection(isExpanded ? null : section.id)}
-                    style={{ width: "100%", padding: "11px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", backgroundColor: isExpanded ? "rgba(201,168,76,0.08)" : "transparent", color: isExpanded ? "#C9A84C" : "#FFFFFF", fontSize: "12px", fontWeight: 500, textAlign: "left", cursor: "pointer" }}
+                    style={{ width: "100%", padding: "11px 14px", display: "flex", alignItems: "between", justifyContent: "space-between", backgroundColor: isExpanded ? "rgba(201,168,76,0.08)" : "transparent", color: isExpanded ? "#C9A84C" : "#FFFFFF", fontSize: "12px", fontWeight: 500, textAlign: "left", cursor: "pointer" }}
                   >
                     <span>{section.title}</span>
                     {isExpanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
@@ -541,8 +557,7 @@ export default function AdminPage() {
                   {isExpanded && (
                     <div style={{ padding: "14px", display: "flex", flexDirection: "column", gap: "14px" }}>
                       {filteredKeys.map((key) => {
-                        const fieldValue = pageTranslations[key] as { id?: string; en?: string } | undefined;
-                        // Skip non-bilingual fields (arrays, nested objects)
+                        const fieldValue = pageTranslations[key] as { id?: any; en?: any } | undefined;
                         if (!fieldValue || typeof fieldValue !== "object" || Array.isArray(fieldValue) || (!("id" in fieldValue) && !("en" in fieldValue))) return null;
 
                         return (
@@ -732,8 +747,10 @@ export default function AdminPage() {
                       </div>
                       <div style={{ display: "grid", gap: "10px" }}>
                         {keys.map((key) => {
-                          const field = pageTranslations[key] as { id?: string; en?: string } | undefined;
+                          const field = pageTranslations[key] as { id?: any; en?: any } | undefined;
                           const isFocused = activeEditKey === key;
+                          const idVal = Array.isArray(field?.id) ? field.id.join(" • ") : field?.id;
+                          const enVal = Array.isArray(field?.en) ? field.en.join(" • ") : field?.en;
                           return (
                             <div
                               key={key}
@@ -754,11 +771,11 @@ export default function AdminPage() {
                               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                                 <div style={{ fontSize: "12px", color: "#2D2D2D", lineHeight: 1.5 }}>
                                   <span style={{ fontSize: "9px", color: "#C9A84C", fontWeight: 700, marginRight: "4px" }}>ID</span>
-                                  {field?.id || <span style={{ color: "#AAAAAA", fontStyle: "italic" }}>—</span>}
+                                  {idVal || <span style={{ color: "#AAAAAA", fontStyle: "italic" }}>—</span>}
                                 </div>
                                 <div style={{ fontSize: "12px", color: "#2D2D2D", lineHeight: 1.5 }}>
                                   <span style={{ fontSize: "9px", color: "#6B9BD2", fontWeight: 700, marginRight: "4px" }}>EN</span>
-                                  {field?.en || <span style={{ color: "#AAAAAA", fontStyle: "italic" }}>—</span>}
+                                  {enVal || <span style={{ color: "#AAAAAA", fontStyle: "italic" }}>—</span>}
                                 </div>
                               </div>
                             </div>
