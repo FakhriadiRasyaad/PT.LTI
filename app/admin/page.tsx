@@ -226,6 +226,7 @@ function FieldRow({
     keyStr.includes("_tagline") ||
     keyStr.includes("_body") ||
     keyStr.includes("_intro") ||
+    keyStr === "intro" ||
     keyStr === "quote" ||
     isArrayField ||
     /^[sS]\d+$/.test(keyStr);
